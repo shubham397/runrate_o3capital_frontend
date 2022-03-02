@@ -5,7 +5,7 @@ import {
    LOGIN_FAIL,
    LOGOUT,
  } from "../actions/types";
- const user = JSON.parse(localStorage.getItem("user"));
+ const user = JSON.parse(localStorage.getItem("token"));
  const initialState = user
    ? { isLoggedIn: true, user }
    : { isLoggedIn: false, user: null };

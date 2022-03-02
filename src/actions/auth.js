@@ -10,14 +10,27 @@ import AuthService from "../services/auth.service";
 export const register = (username, email, password) => (dispatch) => {
   return AuthService.register(username, email, password).then(
     (response) => {
-      dispatch({
-        type: REGISTER_SUCCESS,
-      });
-      dispatch({
-        type: SET_MESSAGE,
-        payload: response.data.message,
-      });
-      return Promise.resolve();
+      console.log(response, " - response");
+      if (response.data.code === 200) {
+        dispatch({
+          type: REGISTER_SUCCESS,
+        });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: response.data.message,
+        });
+        return Promise.resolve();
+      } else {
+        const message = response.data.message
+        dispatch({
+          type: REGISTER_FAIL,
+        });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+        return Promise.reject();
+      }
     },
     (error) => {
       const message =
@@ -37,14 +50,27 @@ export const register = (username, email, password) => (dispatch) => {
     }
   );
 };
+
 export const login = (username, password) => (dispatch) => {
   return AuthService.login(username, password).then(
     (data) => {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: { user: data },
-      });
-      return Promise.resolve();
+      if (data.code === 200) {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: { user: data },
+        });
+        return Promise.resolve();
+      } else {
+        const message = data.message;
+        dispatch({
+          type: LOGIN_FAIL,
+        });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+        return Promise.reject();
+      }
     },
     (error) => {
       const message =
@@ -64,6 +90,7 @@ export const login = (username, password) => (dispatch) => {
     }
   );
 };
+
 export const logout = () => (dispatch) => {
   AuthService.logout();
   dispatch({
