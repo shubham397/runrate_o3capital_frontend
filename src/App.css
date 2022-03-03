@@ -40,3 +40,7 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+body{
+  background-color:lightgrey;
+}

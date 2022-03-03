@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllContacts, deleteContact, addContact } from "../actions/contact";
 import { logout } from "../actions/auth";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
+import { MdDeleteForever } from "react-icons/md";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { RiLogoutBoxFill } from "react-icons/ri";
 
 const Dashboard = (props) => {
   const { contact } = useSelector((state) => state.contact);
@@ -32,6 +35,7 @@ const Dashboard = (props) => {
 
   function deleteOneContact(contactId) {
     dispatch(deleteContact(userId, contactId));
+    alert("Deleted successfully!")
     setModalDeleteShow(false)
   }
 
@@ -184,7 +188,7 @@ const Dashboard = (props) => {
           logoutUser();
         }}
       >
-        Logout
+        <RiLogoutBoxFill/>
       </Button>
       <h2 style={{ textAlign: "center" }}>
         <u>Dashboard</u>
@@ -220,7 +224,7 @@ const Dashboard = (props) => {
                           setModalDeleteShow(true);
                         }}
                       >
-                        Delete
+                        <MdDeleteForever/>
                       </button>
                     </td>
                   </tr>
@@ -236,7 +240,7 @@ const Dashboard = (props) => {
           setModalShow(true);
         }}
       >
-        Add Contact
+        <IoPersonAddSharp/>
       </Button>
 
       <AddContactModal show={modalShow} onHide={() => setModalShow(false)} />
