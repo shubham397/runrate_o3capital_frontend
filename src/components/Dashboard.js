@@ -192,14 +192,14 @@ const Dashboard = (props) => {
           logoutUser();
         }}
       >
-        <RiLogoutBoxFill />
+        <RiLogoutBoxFill /> Logout
       </Button>
       <h2 style={{ textAlign: "center", color: "blueviolet" }}>
         <u>Dashboard</u>
       </h2>
       {data.length > 0 && (
-        <div class="table-responsive">
-          <table className="table table-striped">
+        <div class="table-responsive col-12">
+          <table className="table table-striped col-12">
             <thead style={{ color: "blue" }}>
               <tr>
                 <th scope="col">#</th>
@@ -246,7 +246,7 @@ const Dashboard = (props) => {
           setModalShow(true);
         }}
       >
-        <IoPersonAddSharp />
+        <IoPersonAddSharp /> Add Contact
       </Button>
 
       <AddContactModal show={modalShow} onHide={() => setModalShow(false)} />
