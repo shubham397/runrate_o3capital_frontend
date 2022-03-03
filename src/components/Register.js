@@ -5,6 +5,8 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { register } from "../actions/auth";
+import { RiUserAddFill } from "react-icons/ri";
+
 const required = (value) => {
   if (!value) {
     return (
@@ -126,7 +128,7 @@ const Register = (props) => {
               />
             </div>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}} className="form-group">
-              <button className="btn btn-primary btn-block" style={{marginTop:'20px'}}>Sign Up</button>
+              <button className="btn btn-primary btn-block" style={{marginTop:'20px'}}><RiUserAddFill/>Sign Up</button>
               <a style={{color: 'blue', marginTop:'20px', marginLeft: '10px'}} onClick={()=>{toLogin()}}>
                 To Login
               </a>

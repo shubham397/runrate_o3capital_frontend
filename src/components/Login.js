@@ -5,6 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { login } from "../actions/auth";
+import { RiLoginBoxFill } from "react-icons/ri";
 
 const required = (value) => {
   if (!value) {
@@ -90,7 +91,7 @@ const Login = (props) => {
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              <span>Login</span>
+              <span> <RiLoginBoxFill/>Login</span>
             </button>
             <div style={{marginTop:'20px', marginLeft: '10px'}}>
               <a style={{color: 'blue'}} onClick={()=>{toRegister()}}>
