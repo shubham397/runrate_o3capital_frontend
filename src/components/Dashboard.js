@@ -198,44 +198,46 @@ const Dashboard = (props) => {
         <u>Dashboard</u>
       </h2>
       {data.length > 0 && (
-        <table className="table table-striped">
-          <thead style={{ color: "blue" }}>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data &&
-              data.map((contact, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{contact.Name}</td>
-                    <td>{contact.Email}</td>
-                    <td>{contact.Phone}</td>
-                    <td>
-                      <button
-                        className="btn btn-danger btn-block"
-                        // onClick={(e) => {
-                        //   deleteOneContact(contact._id);
-                        // }}
-                        onClick={() => {
-                          setContactId(contact._id);
-                          setModalDeleteShow(true);
-                        }}
-                      >
-                        <MdDeleteForever />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table className="table table-striped">
+            <thead style={{ color: "blue" }}>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                data.map((contact, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{contact.Name}</td>
+                      <td>{contact.Email}</td>
+                      <td>{contact.Phone}</td>
+                      <td>
+                        <button
+                          className="btn btn-danger btn-block"
+                          // onClick={(e) => {
+                          //   deleteOneContact(contact._id);
+                          // }}
+                          onClick={() => {
+                            setContactId(contact._id);
+                            setModalDeleteShow(true);
+                          }}
+                        >
+                          <MdDeleteForever />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       )}
       <Button
         variant="primary"
