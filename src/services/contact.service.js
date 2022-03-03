@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-const API_URL = "http://localhost:4000/api/v1/contact";
+const API_URL = "https://whispering-ocean-96566.herokuapp.com/api/v1/contact";
 
 const getAllContacts = (userId) => {
   return axios.get(API_URL + `/${userId}`,{ headers: authHeader() });

@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:4000/api/v1/user/auth/";
+const API_URL = "https://whispering-ocean-96566.herokuapp.com/api/v1/user/auth/";
 const register = (username, email, password) => {
   return axios.post(API_URL + "signup", {
     name: username,
