@@ -5,6 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { login } from "../actions/auth";
+
 const required = (value) => {
   if (!value) {
     return (
@@ -37,7 +38,7 @@ const Login = (props) => {
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       dispatch(login(email, password))
-        .then(() => {
+        .then((data) => {
           props.history.push("/dashboard");
           window.location.reload();
         })
@@ -48,9 +49,15 @@ const Login = (props) => {
       setLoading(false);
     }
   };
+
+  function toRegister() {
+    props.history.push("/register");
+  }
+
   if (isLoggedIn) {
     return <Redirect to="/dashboard" />;
   }
+
   return (
     <div className="col-md-12">
       <div className="card card-container">
@@ -85,6 +92,11 @@ const Login = (props) => {
               )}
               <span>Login</span>
             </button>
+            <div style={{marginTop:'20px', marginLeft: '10px'}}>
+              <a style={{color: 'blue'}} onClick={()=>{toRegister()}}>
+              To Register
+              </a>
+            </div>
           </div>
           {message && (
             <div className="form-group">

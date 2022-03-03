@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllContacts, deleteContact } from "../actions/contact";
-import {Modal, Button} from 'react-bootstrap'
+import { getAllContacts, deleteContact, addContact } from "../actions/contact";
+import { logout } from "../actions/auth";
+import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const { contact } = useSelector((state) => state.contact);
   const { userId } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
+  const [message, setMessage] = useState({});
   const dispatch = useDispatch();
   const [data, setDate] = useState([]);
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalDeleteShow, setModalDeleteShow] = useState(false);
+  const [contactId, setContactId] = useState();
 
+  let newName = "";
+  let newEmail = "";
+  let newPhone = "";
   useEffect(() => {
     fetchContacts();
   }, []);
@@ -26,15 +32,49 @@ const Dashboard = () => {
 
   function deleteOneContact(contactId) {
     dispatch(deleteContact(userId, contactId));
+    setModalDeleteShow(false)
   }
 
-  function addOneContact(contactId) {}
+  function logoutUser() {
+    dispatch(logout());
+    props.history.push("/login");
+    // window.location.reload();
+  }
+
+  function onChangeName(e) {
+    newName = e.target.value;
+  }
+
+  function onChangeEmail(e) {
+    newEmail = e.target.value;
+  }
+
+  function onChangePhone(e) {
+    newPhone = e.target.value;
+  }
+
+  function addOneContact() {
+    dispatch(addContact(newName, newEmail, newPhone, userId))
+      .then((data) => {
+        setMessage({
+          status: "success",
+          message: data,
+        });
+        setModalShow(false);
+      })
+      .catch((err) => {
+        setMessage({
+          status: "error",
+          message: err,
+        });
+      });
+  }
 
   if (!userId) {
     return <Redirect to="/login" />;
   }
 
-  function MyVerticallyCenteredModal(props) {
+  function AddContactModal(props) {
     return (
       <Modal
         {...props}
@@ -44,19 +84,92 @@ const Dashboard = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
+            Add Contact
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Centered Modal</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Name"
+            className="mb-3"
+          >
+            <Form.Control
+              className="pt-5"
+              type="text"
+              defaultValue={newName}
+              onChange={(e) => {
+                onChangeName(e);
+              }}
+              placeholder="Enter name"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Email"
+            className="mb-3"
+          >
+            <Form.Control
+              className="pt-5"
+              type="email"
+              defaultValue={newEmail}
+              onChange={(e) => {
+                onChangeEmail(e);
+              }}
+              placeholder="Enter Email"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Phone"
+            className="mb-3"
+          >
+            <Form.Control
+              className="pt-5"
+              type="text"
+              defaultValue={newPhone}
+              onChange={(e) => {
+                onChangePhone(e);
+              }}
+              placeholder="Enter Phone"
+            />
+          </FloatingLabel>
+          {message.status == "success" ? (
+            <label style={{ color: "green" }}>{message.message}</label>
+          ) : (
+            <label style={{ color: "red" }}>{message.message}</label>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button className="btn btn-danger btn-block" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button onClick={addOneContact}>Submit</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  function DeleteModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Delete Contact
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Do you really want to Delete?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="btn btn-danger btn-block" onClick={props.onHide}>
+            Cancel
+          </Button>
+          <Button onClick={()=>{deleteOneContact(contactId)}}>Delete</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -64,48 +177,70 @@ const Dashboard = () => {
 
   return (
     <div className="card-contact card-container">
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data &&
-            data.map((contact, index) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{contact.Name}</td>
-                  <td>{contact.Email}</td>
-                  <td>{contact.Phone}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger btn-block"
-                      onClick={(e) => {
-                        deleteOneContact(contact._id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
+      <Button
+        className="float-end"
+        variant="danger"
+        onClick={() => {
+          logoutUser();
+        }}
+      >
+        Logout
+      </Button>
+      <h2 style={{ textAlign: "center" }}>
+        <u>Dashboard</u>
+      </h2>
+      {data.length> 0 && (
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.map((contact, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{contact.Name}</td>
+                    <td>{contact.Email}</td>
+                    <td>{contact.Phone}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-block"
+                        // onClick={(e) => {
+                        //   deleteOneContact(contact._id);
+                        // }}
+                        onClick={() => {
+                          setContactId(contact._id)
+                          setModalDeleteShow(true);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      )}
+      <Button
+        variant="primary"
+        onClick={() => {
+          setMessage({});
+          setModalShow(true);
+        }}
+      >
+        Add Contact
       </Button>
 
-      <MyVerticallyCenteredModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
+      <AddContactModal show={modalShow} onHide={() => setModalShow(false)} />
+      <DeleteModal show={modalDeleteShow}  onHide={() => setModalDeleteShow(false)} />
     </div>
   );
 };

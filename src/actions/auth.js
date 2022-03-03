@@ -5,6 +5,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   SET_MESSAGE,
+  CLEAR_MESSAGE
 } from "./types";
 import AuthService from "../services/auth.service";
 export const register = (username, email, password) => (dispatch) => {
@@ -56,9 +57,9 @@ export const login = (username, password) => (dispatch) => {
       if (data.code === 200) {
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: { user: data },
+          payload: { user: data.data, userId: data.data[0].userId },
         });
-        return Promise.resolve();
+        return Promise.resolve(data.code);
       } else {
         const message = data.message;
         dispatch({
@@ -94,5 +95,8 @@ export const logout = () => (dispatch) => {
   AuthService.logout();
   dispatch({
     type: LOGOUT,
+  });
+  dispatch({
+    type: CLEAR_MESSAGE
   });
 };

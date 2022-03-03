@@ -82,6 +82,10 @@ const Register = (props) => {
         });
     }
   };
+
+  function toLogin() {
+    props.history.push("/login");
+  }
   return (
     <div className="col-md-12">
       <div className="card card-container">
@@ -123,6 +127,9 @@ const Register = (props) => {
             </div>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}} className="form-group">
               <button className="btn btn-primary btn-block" style={{marginTop:'20px'}}>Sign Up</button>
+              <a style={{color: 'blue', marginTop:'20px', marginLeft: '10px'}} onClick={()=>{toLogin()}}>
+                To Login
+              </a>
             </div>
           </div>
           {message && (
