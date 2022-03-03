@@ -35,8 +35,8 @@ const Dashboard = (props) => {
 
   function deleteOneContact(contactId) {
     dispatch(deleteContact(userId, contactId));
-    alert("Deleted successfully!")
-    setModalDeleteShow(false)
+    alert("Deleted successfully!");
+    setModalDeleteShow(false);
   }
 
   function logoutUser() {
@@ -166,14 +166,18 @@ const Dashboard = (props) => {
             Delete Contact
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Do you really want to Delete?
-        </Modal.Body>
+        <Modal.Body>Do you really want to Delete?</Modal.Body>
         <Modal.Footer>
           <Button className="btn btn-danger btn-block" onClick={props.onHide}>
             Cancel
           </Button>
-          <Button onClick={()=>{deleteOneContact(contactId)}}>Delete</Button>
+          <Button
+            onClick={() => {
+              deleteOneContact(contactId);
+            }}
+          >
+            Delete
+          </Button>
         </Modal.Footer>
       </Modal>
     );
@@ -188,14 +192,14 @@ const Dashboard = (props) => {
           logoutUser();
         }}
       >
-        <RiLogoutBoxFill/>
+        <RiLogoutBoxFill />
       </Button>
-      <h2 style={{ textAlign: "center" }}>
+      <h2 style={{ textAlign: "center", color: "blueviolet" }}>
         <u>Dashboard</u>
       </h2>
-      {data.length> 0 && (
+      {data.length > 0 && (
         <table className="table table-striped">
-          <thead>
+          <thead style={{ color: "blue" }}>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Name</th>
@@ -220,11 +224,11 @@ const Dashboard = (props) => {
                         //   deleteOneContact(contact._id);
                         // }}
                         onClick={() => {
-                          setContactId(contact._id)
+                          setContactId(contact._id);
                           setModalDeleteShow(true);
                         }}
                       >
-                        <MdDeleteForever/>
+                        <MdDeleteForever />
                       </button>
                     </td>
                   </tr>
@@ -240,11 +244,14 @@ const Dashboard = (props) => {
           setModalShow(true);
         }}
       >
-        <IoPersonAddSharp/>
+        <IoPersonAddSharp />
       </Button>
 
       <AddContactModal show={modalShow} onHide={() => setModalShow(false)} />
-      <DeleteModal show={modalDeleteShow}  onHide={() => setModalDeleteShow(false)} />
+      <DeleteModal
+        show={modalDeleteShow}
+        onHide={() => setModalDeleteShow(false)}
+      />
     </div>
   );
 };
